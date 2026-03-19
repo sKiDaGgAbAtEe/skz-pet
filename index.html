@@ -155,7 +155,8 @@
       </div>
 
       <div class="controls">
-        <div id="NORMAL_BTNS">
+        <!-- Action buttons — hidden during trivia -->
+        <div id="NORMAL_BTNS" style="width:100%;">
           <div class="actrow">
             <div class="btngroup"><div class="btn" onclick="Wolf.act('feed')">🍖</div><div class="btnlabel">Feed</div></div>
             <div class="btngroup"><div class="btn" onclick="Wolf.act('pet')">✨</div><div class="btnlabel">Pet</div></div>
@@ -172,15 +173,10 @@
             <button class="lstick-btn" data-color="#cc44ff" onclick="Wolf.pickStick(this)">🪄</button>
             <button class="lstick-btn" data-color="#ffffff" onclick="Wolf.pickStick(this)">🪄</button>
           </div>
-          <div class="outfitstrip">
-            <button class="outfitbtn on" onclick="Wolf.setOutfit('default',this)">Default</button>
-            <button class="outfitbtn" onclick="Wolf.setOutfit('karma',this)">KARMA</button>
-            <button class="outfitbtn" onclick="Wolf.setOutfit('hoodie',this)">Hoodie</button>
-            <button class="outfitbtn" onclick="Wolf.setOutfit('nude',this)">No Shirt</button>
-          </div>
         </div>
 
-        <div id="TRIVIA_BTNS">
+        <!-- Trivia answer buttons — shown only during trivia -->
+        <div id="TRIVIA_BTNS" style="display:none;width:100%;flex-direction:column;gap:6px;">
           <div class="trivia-btn-row">
             <button class="trivia-answer-btn" id="TRIVIA_BTN_0" onclick="Trivia.answer(0)"><span class="trivia-btn-letter">A</span><span class="trivia-btn-text">—</span></button>
             <button class="trivia-answer-btn" id="TRIVIA_BTN_1" onclick="Trivia.answer(1)"><span class="trivia-btn-letter">B</span><span class="trivia-btn-text">—</span></button>
@@ -193,6 +189,14 @@
             <button class="trivia-quit-btn" onclick="Trivia.stop()">✕ Quit</button>
             <button class="trivia-skip-btn-ctrl" id="TRIVIA_SKIP" onclick="Trivia.skip()">→ Skip</button>
           </div>
+        </div>
+
+        <!-- Outfit strip — always visible, never inside a toggled div -->
+        <div class="outfitstrip" style="width:100%;">
+          <button class="outfitbtn on" onclick="Wolf.setOutfit('default',this)">Default</button>
+          <button class="outfitbtn" onclick="Wolf.setOutfit('karma',this)">KARMA</button>
+          <button class="outfitbtn" onclick="Wolf.setOutfit('hoodie',this)">Hoodie</button>
+          <button class="outfitbtn" onclick="Wolf.setOutfit('nude',this)">No Shirt</button>
         </div>
       </div>
 
