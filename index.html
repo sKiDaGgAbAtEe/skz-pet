@@ -35,7 +35,12 @@
     .trivia-score-pct{font-size:13px;color:#3a5c3a;font-weight:800;}
     .trivia-score-label{font-size:11px;color:rgba(142,207,142,.8);font-weight:700;line-height:1.5;}
     .trivia-score-close{margin-top:8px;background:rgba(142,207,142,.1);border:1px solid rgba(142,207,142,.25);border-radius:20px;padding:6px 16px;font-size:10px;color:#8ecf8e;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;}
-    #TRIVIA_BTNS{display:none;flex-direction:column;gap:6px;}
+    #TRIVIA_BTNS{display:none;flex-direction:column;gap:6px;width:100%;}
+    #NORMAL_BTNS{display:block;width:100%;}
+    /* Hide open eyes when sleeping — eyelids cover but whites still show */
+    .eyes-closed .eyelid-l, .eyes-closed .eyelid-r{animation:none!important;transform:scaleY(1)!important;}
+    .eyes-closed .eye-white-l, .eyes-closed .eye-iris-l,
+    .eyes-closed .eye-white-r, .eyes-closed .eye-iris-r{opacity:0!important;}
     .trivia-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
     .trivia-answer-btn{background:linear-gradient(150deg,#1e1d38,#12112a);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:1px;transition:all .15s cubic-bezier(.34,1.56,.64,1);min-height:46px;}
     .trivia-answer-btn:hover{background:linear-gradient(150deg,#2a2950,#1a184a);transform:scale(1.02);}
@@ -126,9 +131,9 @@
                   <path d="M28 80 Q28 60 36 44 Q30 56 30 78 Q30 100 42 112Z" fill="#6a8090" opacity=".22"/><path d="M112 80 Q112 60 104 44 Q110 56 110 78 Q110 100 98 112Z" fill="#6a8090" opacity=".18"/>
                   <path d="M46 78 Q46 108 70 112 Q94 108 94 78 Q92 60 70 58 Q48 60 46 78Z" fill="url(#gFace)"/>
                   <path d="M60 46 Q70 38 80 46 Q76 54 70 56 Q64 54 60 46Z" fill="#7a9098" opacity=".55"/><path d="M63 46 Q70 40 77 46 Q74 52 70 53 Q66 52 63 46Z" fill="#8aaab8" opacity=".4"/>
-                  <ellipse cx="52" cy="78" rx="11" ry="9" fill="white" opacity=".9"/><ellipse cx="52" cy="79" rx="7" ry="7" fill="#2a2a2a"/><ellipse cx="52" cy="79" rx="5" ry="5" fill="#1a1a1a"/><ellipse cx="55" cy="76" rx="2.5" ry="2" fill="white" opacity=".8"/><ellipse cx="50" cy="81" rx="1" ry=".8" fill="white" opacity=".4"/>
+                  <ellipse class="eye-white-l" cx="52" cy="78" rx="11" ry="9" fill="white" opacity=".9"/><ellipse class="eye-iris-l" cx="52" cy="79" rx="7" ry="7" fill="#2a2a2a"/><ellipse class="eye-iris-l" cx="52" cy="79" rx="5" ry="5" fill="#1a1a1a"/><ellipse class="eye-iris-l" cx="55" cy="76" rx="2.5" ry="2" fill="white" opacity=".8"/><ellipse class="eye-iris-l" cx="50" cy="81" rx="1" ry=".8" fill="white" opacity=".4"/>
                   <g class="eyelid-l"><path d="M41 78 Q52 68 63 78 Q55 72 52 71 Q49 72 41 78Z" fill="#8a9ea8"/></g>
-                  <ellipse cx="88" cy="78" rx="11" ry="9" fill="white" opacity=".9"/><ellipse cx="88" cy="79" rx="7" ry="7" fill="#2a2a2a"/><ellipse cx="88" cy="79" rx="5" ry="5" fill="#1a1a1a"/><ellipse cx="91" cy="76" rx="2.5" ry="2" fill="white" opacity=".8"/><ellipse cx="86" cy="81" rx="1" ry=".8" fill="white" opacity=".4"/>
+                  <ellipse class="eye-white-r" cx="88" cy="78" rx="11" ry="9" fill="white" opacity=".9"/><ellipse class="eye-iris-r" cx="88" cy="79" rx="7" ry="7" fill="#2a2a2a"/><ellipse class="eye-iris-r" cx="88" cy="79" rx="5" ry="5" fill="#1a1a1a"/><ellipse class="eye-iris-r" cx="91" cy="76" rx="2.5" ry="2" fill="white" opacity=".8"/><ellipse class="eye-iris-r" cx="86" cy="81" rx="1" ry=".8" fill="white" opacity=".4"/>
                   <g class="eyelid-r"><path d="M77 78 Q88 68 99 78 Q91 72 88 71 Q85 72 77 78Z" fill="#8a9ea8"/></g>
                   <g class="sleep-line"><path d="M42 77 Q52 83 62 77" stroke="#2a2e32" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M44 76 Q43 73 41 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M52 78 Q51 74 50 72" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M60 76 Q60 73 62 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/></g>
                   <g class="sleep-line"><path d="M78 77 Q88 83 98 77" stroke="#2a2e32" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M80 76 Q79 73 77 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M88 78 Q87 74 86 72" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M96 76 Q96 73 98 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/></g>
