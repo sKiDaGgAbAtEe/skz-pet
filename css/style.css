@@ -335,14 +335,14 @@ body::before {
 
 /* ── Pet hand ─────────────────────────────────────── */
 @keyframes petHandAnim {
-  0%  { transform: translateY(-60px); opacity: 0; }
+  0%  { transform: translateY(-90px); opacity: 0; }
   12% { transform: translateY(0px);   opacity: 1; }
-  28% { transform: translateY(-10px); opacity: 1; }
-  44% { transform: translateY(4px);   opacity: 1; }
-  60% { transform: translateY(-8px);  opacity: 1; }
+  28% { transform: translateY(-8px);  opacity: 1; }
+  44% { transform: translateY(2px);   opacity: 1; }
+  60% { transform: translateY(-6px);  opacity: 1; }
   76% { transform: translateY(2px);   opacity: 1; }
-  88% { transform: translateY(-40px); opacity: .6; }
-  100%{ transform: translateY(-80px); opacity: 0; }
+  88% { transform: translateY(-60px); opacity: .6; }
+  100%{ transform: translateY(-100px);opacity: 0; }
 }
 #PETHAND.petting { animation: petHandAnim 1.6s cubic-bezier(.4,0,.2,1) forwards; }
 
