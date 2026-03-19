@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "characters": [
+    {
+      "id": "wolf-chan",
+      "name": "Wolf Chan",
+      "member": "Bang Chan",
+      "animal": "wolf",
+      "unlocked": true,
+      "defaultEmotion": "content",
+      "accentColor": "#9daeb6",
+      "glowColor": "#78d0e8",
+      "outfits": [
+        {
+          "id": "default",
+          "label": "Default",
+          "description": "Classic black SKZ tee"
+        },
+        {
+          "id": "karma",
+          "label": "KARMA",
+          "description": "Blue and black KARMA jersey"
+        },
+        {
+          "id": "hoodie",
+          "label": "Hoodie",
+          "description": "Dark hoodie with planet necklace"
+        },
+        {
+          "id": "nude",
+          "label": "No Shirt",
+          "description": "Just Wolf Chan as he is"
+        }
+      ]
+    }
+  ],
+  "comingSoon": [
+    { "id": "lee-know-dog",    "name": "Dori",       "member": "Lee Know"  },
+    { "id": "changbin-dog",    "name": "Doongi",     "member": "Changbin"  },
+    { "id": "hyunjin-cat",     "name": "Venom",      "member": "Hyunjin"   },
+    { "id": "han-squirrel",    "name": "Han Quokka",  "member": "Han"       },
+    { "id": "felix-fox",       "name": "Pup",         "member": "Felix"     },
+    { "id": "seungmin-dog",    "name": "Dobby",       "member": "Seungmin"  },
+    { "id": "in-rabbit",       "name": "Peter",       "member": "I.N"       }
+  ]
+}

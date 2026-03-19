@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "title": "Are you a Hard Stan STAY?",
+  "questions": [
+    {
+      "id": "q01",
+      "text": "How old was Bang Chan on October 3, 2020–2021?",
+      "answers": ["25", "19", "23", "28"],
+      "correct": 0
+    },
+    {
+      "id": "q02",
+      "text": "Who was eliminated from the group during Stray Kids survival show, but came back?",
+      "answers": ["Lee Know (Minho)", "Felix", "Woojin", "Hyunjin"],
+      "correct": 0,
+      "multi": true,
+      "note": "Both Lee Know and Felix were eliminated and brought back"
+    },
+    {
+      "id": "q03",
+      "text": "When did Stray Kids officially debut?",
+      "answers": ["March 25, 2018", "June 12, 2013", "September 23, 2020", "July 18, 2017"],
+      "correct": 0
+    },
+    {
+      "id": "q04",
+      "text": "What song did Stray Kids debut with?",
+      "answers": ["Hellevator", "District 9", "I am YOU", "Side Effects"],
+      "correct": 0
+    },
+    {
+      "id": "q05",
+      "text": "Who has 3 cats named Sooni, Doongi, and Dori?",
+      "answers": ["Lee Know (Minho)", "Felix", "Bang Chan", "Changbin"],
+      "correct": 0
+    },
+    {
+      "id": "q06",
+      "text": "Which member is well known for loving dark concepts and dark fashion?",
+      "answers": ["Changbin", "Hyunjin", "Han (Jisung)", "Seungmin"],
+      "correct": 0
+    },
+    {
+      "id": "q07",
+      "text": "Which member frequently mistakes I.N (Jeongin) for Felix?",
+      "answers": ["Lee Know (Minho)", "Bang Chan", "Changbin", "Seungmin"],
+      "correct": 0
+    },
+    {
+      "id": "q08",
+      "text": "Who calls STAYs \"baby girls\" or \"baby stay\"?",
+      "answers": ["Bang Chan", "Han (Jisung)", "Seungmin", "I.N (Jeongin)"],
+      "correct": 0
+    },
+    {
+      "id": "q09",
+      "text": "Which member is known for singing Ed Sheeran songs a lot?",
+      "answers": ["I.N (Jeongin)", "Bang Chan", "Hyunjin", "No one"],
+      "correct": 0
+    },
+    {
+      "id": "q10",
+      "text": "Which member is a huge DAY6 fan?",
+      "answers": ["Seungmin", "Felix", "I.N (Jeongin)", "Lee Know (Minho)"],
+      "correct": 0
+    },
+    {
+      "id": "q11",
+      "text": "Who auditioned for JYP Entertainment without their parents' permission?",
+      "answers": ["Felix", "Seungmin", "Han (Jisung)", "Changbin"],
+      "correct": 0
+    },
+    {
+      "id": "q12",
+      "text": "Which member is known for talking in their sleep?",
+      "answers": ["Lee Know (Minho)", "I.N (Jeongin)", "Seungmin", "Bang Chan"],
+      "correct": 0
+    },
+    {
+      "id": "q13",
+      "text": "Who are the members of 3RACHA?",
+      "answers": ["Bang Chan, Han & Changbin", "Lee Know, Han & Hyunjin", "Bang Chan, Felix & Changbin", "Han, Hyunjin & Changbin"],
+      "correct": 0
+    },
+    {
+      "id": "q14",
+      "text": "Who is rumored to have secret Wattpad and TikTok accounts?",
+      "answers": ["Han (Jisung)", "Bang Chan", "Felix", "I.N (Jeongin)"],
+      "correct": 0
+    },
+    {
+      "id": "q15",
+      "text": "Which SKZ member knows Sana from TWICE?",
+      "answers": ["Hyunjin", "Seungmin", "Changbin", "Bang Chan"],
+      "correct": 0
+    },
+    {
+      "id": "q16",
+      "text": "When is Hyunjin's birthday?",
+      "answers": ["March 20", "July 22", "May 14", "September 15"],
+      "correct": 0
+    },
+    {
+      "id": "q17",
+      "text": "What is Felix's favorite food?",
+      "answers": ["짬뽕 (Jjamppong)", "Pizza", "Rice Cakes", "김치찌개 (Kimchi Jjigae)"],
+      "correct": 0
+    }
+  ]
+}

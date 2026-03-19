@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKZOO Pet 🐾</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .scene-bg{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;}
+    .scene-bg img{width:100%;height:100%;object-fit:cover;display:block;}
+    .scene-overlay{position:fixed;inset:0;z-index:0;background:rgba(0,0,0,0.45);pointer-events:none;opacity:0;transition:opacity .8s;}
+    .casing-wrapper{position:relative;z-index:2;}
+    .casing-image{position:absolute;inset:-12px;background-size:contain;background-position:center;background-repeat:no-repeat;pointer-events:none;z-index:10;}
+    .toolbar{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;position:relative;z-index:5;margin-bottom:4px;}
+    .toolbar-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 12px;font-size:10px;color:rgba(142,207,142,.7);font-family:'Nunito',sans-serif;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+    .toolbar-btn:hover,.toolbar-btn.on{background:rgba(100,200,100,.12);border-color:rgba(100,200,100,.3);color:#8ecf8e;}
+    #CASING_INPUT,#SCENE_INPUT{display:none;}
+    #TRIVIA_OVERLAY{display:none;position:absolute;inset:0;background:rgba(10,14,10,.94);z-index:22;flex-direction:column;align-items:stretch;padding:10px;gap:5px;border-radius:14px;}
+    .trivia-progress{font-size:8px;color:#3a5c3a;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:right;}
+    .trivia-question{font-size:11px;color:#8ecf8e;font-weight:800;line-height:1.4;text-align:center;padding:4px 2px;}
+    .trivia-answers{display:flex;flex-direction:column;gap:4px;flex:1;}
+    .trivia-answer{display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(142,207,142,.12);border-radius:7px;}
+    .trivia-letter{font-size:9px;font-weight:900;color:#3a5c3a;width:14px;flex-shrink:0;}
+    .trivia-text{font-size:10px;color:rgba(142,207,142,.8);font-weight:700;line-height:1.3;}
+    .trivia-correct{background:rgba(91,186,110,.2)!important;border-color:#5dba6e!important;}
+    .trivia-correct .trivia-letter,.trivia-correct .trivia-text{color:#5dba6e!important;}
+    .trivia-wrong{background:rgba(232,76,106,.15)!important;border-color:#e84c6a!important;}
+    .trivia-wrong .trivia-letter,.trivia-wrong .trivia-text{color:#e84c6a!important;}
+    .trivia-reveal{background:rgba(245,200,66,.15)!important;border-color:#f5c842!important;}
+    .trivia-reveal .trivia-letter,.trivia-reveal .trivia-text{color:#f5c842!important;}
+    .trivia-score-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;text-align:center;}
+    .trivia-score-num{font-size:34px;font-weight:900;color:#8ecf8e;}
+    .trivia-score-pct{font-size:13px;color:#3a5c3a;font-weight:800;}
+    .trivia-score-label{font-size:11px;color:rgba(142,207,142,.8);font-weight:700;line-height:1.5;}
+    .trivia-score-close{margin-top:8px;background:rgba(142,207,142,.1);border:1px solid rgba(142,207,142,.25);border-radius:20px;padding:6px 16px;font-size:10px;color:#8ecf8e;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;}
+    #TRIVIA_BTNS{display:none;flex-direction:column;gap:6px;}
+    .trivia-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+    .trivia-answer-btn{background:linear-gradient(150deg,#1e1d38,#12112a);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:1px;transition:all .15s cubic-bezier(.34,1.56,.64,1);min-height:46px;}
+    .trivia-answer-btn:hover{background:linear-gradient(150deg,#2a2950,#1a184a);transform:scale(1.02);}
+    .trivia-answer-btn:active{transform:scale(.96);}
+    .trivia-btn-letter{font-size:9px;font-weight:900;color:rgba(142,207,142,.4);letter-spacing:1px;}
+    .trivia-btn-text{font-size:10px;font-weight:700;color:rgba(142,207,142,.75);line-height:1.2;text-align:left;}
+    .trivia-btn-correct{border-color:#5dba6e!important;background:rgba(91,186,110,.15)!important;}
+    .trivia-btn-wrong{border-color:#e84c6a!important;background:rgba(232,76,106,.1)!important;}
+    .trivia-btn-reveal{border-color:#f5c842!important;background:rgba(245,200,66,.1)!important;}
+    .trivia-skip-row{display:flex;justify-content:space-between;align-items:center;}
+    .trivia-quit-btn,.trivia-skip-btn-ctrl{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:5px 14px;font-size:10px;font-weight:800;letter-spacing:.5px;color:rgba(142,207,142,.4);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .18s;}
+    .trivia-quit-btn:hover{color:#e84c6a;border-color:rgba(232,76,106,.3);}
+    .trivia-skip-btn-ctrl:hover{color:#8ecf8e;border-color:rgba(142,207,142,.3);}
+  </style>
+</head>
+<body>
+
+<div class="scene-bg" id="SCENE_BG"></div>
+<div class="scene-overlay" id="SCENE_OVERLAY"></div>
+
+<div class="app-layout">
+
+  <div class="toolbar">
+    <button class="toolbar-btn" onclick="Scene.set(0)">✦ None</button>
+    <button class="toolbar-btn" onclick="Scene.cycle()">⟳ Scene</button>
+    <button class="toolbar-btn" onclick="Scene.upload()">🖼 BG</button>
+    <button class="toolbar-btn" onclick="Casing.upload()">📱 Case</button>
+    <button class="toolbar-btn" id="CASING_CLEAR" onclick="Casing.clear()" style="display:none">✕ Case</button>
+    <button class="toolbar-btn" onclick="Trivia.start()">🎮 Trivia</button>
+  </div>
+
+  <input type="file" id="CASING_INPUT" accept="image/*" onchange="Casing.onFile(event)">
+  <input type="file" id="SCENE_INPUT"  accept="image/*,image/gif" onchange="Scene.onFile(event)">
+
+  <div class="casing-wrapper">
+    <div class="casing-image" id="CASING_IMG"></div>
+
+    <div class="device">
+      <div class="screen-bezel">
+        <div class="screen" id="SCR">
+
+          <div class="statusbar">
+            <span class="statename" id="SNAME">IDLE</span>
+            <div class="hearts">
+              <div class="heart" id="h1"></div><div class="heart" id="h2"></div>
+              <div class="heart" id="h3"></div><div class="heart empty" id="h4"></div>
+              <div class="heart empty" id="h5"></div>
+            </div>
+          </div>
+
+          <div class="mbars" id="MBARS">
+            <div class="mbar"></div><div class="mbar"></div>
+            <div class="mbar"></div><div class="mbar"></div>
+          </div>
+
+          <div class="moodbubble" id="MOOD"></div>
+          <div id="TRIVIA_OVERLAY"></div>
+
+          <div class="wolfwrap">
+            <svg class="wolfsvg" viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#9daeb6"/><stop offset="100%" stop-color="#6a7e87"/></linearGradient>
+                <linearGradient id="gFace" x1=".3" y1="0" x2=".7" y2="1"><stop offset="0%" stop-color="#e2e8ea"/><stop offset="100%" stop-color="#c8d3d8"/></linearGradient>
+                <linearGradient id="gEarIn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e3e46"/><stop offset="100%" stop-color="#1a272e"/></linearGradient>
+                <linearGradient id="gBelly" x1=".5" y1="0" x2=".5" y2="1"><stop offset="0%" stop-color="#dde4e7"/><stop offset="100%" stop-color="#bac6cb"/></linearGradient>
+                <linearGradient id="gShirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22203a"/><stop offset="100%" stop-color="#131226"/></linearGradient>
+                <linearGradient id="gKarma" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e2fa0"/><stop offset="100%" stop-color="#111f6e"/></linearGradient>
+                <linearGradient id="gHoodie" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2e2e2e"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient>
+                <linearGradient id="gPaw" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8c5ca"/><stop offset="100%" stop-color="#8fa0a8"/></linearGradient>
+              </defs>
+              <g class="tail"><path d="M34 140 Q14 128 12 118 Q10 106 22 102 Q34 98 36 110 Q38 120 28 124 Q22 126 24 132 Q26 138 34 140Z" fill="#8a9ea8"/><path d="M24 132 Q18 130 16 120 Q14 110 22 108 Q30 106 32 114 Q30 122 24 132Z" fill="#cdd6da"/><path d="M32 138 Q20 130 18 120 Q22 116 26 122 Q28 130 32 138Z" fill="#6a8090" opacity=".35"/></g>
+              <g class="g-body" id="GBODY">
+                <path d="M40 118 Q32 112 32 128 Q32 152 70 158 Q108 158 108 128 Q108 112 100 118 Q92 124 70 124 Q48 124 40 118Z" fill="url(#gBody)"/><ellipse cx="70" cy="120" rx="30" ry="20" fill="url(#gBody)"/><path d="M52 130 Q52 152 70 155 Q88 152 88 130 Q88 118 70 118 Q52 118 52 130Z" fill="url(#gBelly)"/><path d="M40 118 Q34 128 36 142 Q44 150 54 152 Q44 148 40 138 Q36 128 40 118Z" fill="#5a7080" opacity=".28"/><path d="M100 118 Q106 128 104 142 Q96 150 86 152 Q96 148 100 138 Q104 128 100 118Z" fill="#5a7080" opacity=".22"/>
+                <path d="M40 120 Q24 118 20 130 Q18 140 28 144 Q36 146 42 136 Q46 128 40 120Z" fill="url(#gBody)"/><path d="M24 126 Q20 134 26 140 Q22 136 22 128 Q22 122 26 120Z" fill="#5a7080" opacity=".25"/><ellipse cx="24" cy="144" rx="9" ry="6" fill="url(#gPaw)"/><ellipse cx="24" cy="145" rx="6" ry="4" fill="#d2dadd"/><ellipse cx="19" cy="143" rx="2.5" ry="2" fill="#b8c5ca"/><ellipse cx="24" cy="141" rx="2.5" ry="2" fill="#b8c5ca"/><ellipse cx="29" cy="143" rx="2.5" ry="2" fill="#b8c5ca"/>
+                <path d="M100 120 Q116 118 120 130 Q122 140 112 144 Q104 146 98 136 Q94 128 100 120Z" fill="url(#gBody)"/><path d="M116 126 Q120 134 114 140 Q118 136 118 128 Q118 122 114 120Z" fill="#5a7080" opacity=".22"/><ellipse cx="116" cy="144" rx="9" ry="6" fill="url(#gPaw)"/><ellipse cx="116" cy="145" rx="6" ry="4" fill="#d2dadd"/><ellipse cx="111" cy="143" rx="2.5" ry="2" fill="#b8c5ca"/><ellipse cx="116" cy="141" rx="2.5" ry="2" fill="#b8c5ca"/><ellipse cx="121" cy="143" rx="2.5" ry="2" fill="#b8c5ca"/>
+                <path d="M50 155 Q42 154 40 162 Q40 170 54 170 Q62 170 62 162 Q62 154 50 155Z" fill="url(#gBody)"/><ellipse cx="52" cy="167" rx="10" ry="5.5" fill="#cdd6da"/><ellipse cx="44" cy="165" rx="3" ry="2.5" fill="#b8c5ca"/><ellipse cx="52" cy="163" rx="3" ry="2.5" fill="#b8c5ca"/><ellipse cx="60" cy="165" rx="3" ry="2.5" fill="#b8c5ca"/>
+                <path d="M90 155 Q98 154 100 162 Q100 170 86 170 Q78 170 78 162 Q78 154 90 155Z" fill="url(#gBody)"/><ellipse cx="88" cy="167" rx="10" ry="5.5" fill="#cdd6da"/><ellipse cx="80" cy="165" rx="3" ry="2.5" fill="#b8c5ca"/><ellipse cx="88" cy="163" rx="3" ry="2.5" fill="#b8c5ca"/><ellipse cx="96" cy="165" rx="3" ry="2.5" fill="#b8c5ca"/>
+                <g class="outfit" id="OdefaultG"><path d="M38 118 Q38 148 70 150 Q102 148 102 118 Q92 122 70 122 Q48 122 38 118Z" fill="url(#gShirt)"/><path d="M58 116 Q70 120 82 116 Q78 112 70 111 Q62 112 58 116Z" fill="#2a2840"/><path d="M38 118 Q32 120 28 128 Q34 124 40 122Z" fill="#1e1c36"/><path d="M102 118 Q108 120 112 128 Q106 124 100 122Z" fill="#1e1c36"/><text x="70" y="138" text-anchor="middle" font-size="10" fill="#e84c6a" font-weight="900" font-family="Nunito,sans-serif" letter-spacing="1.5">SKZ</text><path d="M42 148 Q70 152 98 148" stroke="#2e2c48" stroke-width="1" fill="none" opacity=".6"/></g>
+                <g class="outfit off" id="OkarmaG"><path d="M38 118 Q38 148 70 150 Q102 148 102 118 Q92 122 70 122 Q48 122 38 118Z" fill="url(#gKarma)"/><path d="M56 118 L56 150 Q58 151 60 150 L60 118Z" fill="#0d0d22" opacity=".55"/><path d="M80 118 L80 150 Q82 151 84 150 L84 118Z" fill="#0d0d22" opacity=".55"/><path d="M58 116 Q70 120 82 116" stroke="white" stroke-width="1.5" fill="none" opacity=".6"/><path d="M38 118 Q32 120 28 128 Q34 124 40 122Z" fill="#161e88"/><path d="M102 118 Q108 120 112 128 Q106 124 100 122Z" fill="#161e88"/><text x="70" y="136" text-anchor="middle" font-size="7.5" fill="white" font-weight="900" font-family="Nunito,sans-serif" letter-spacing="1">KARMA</text><text x="70" y="146" text-anchor="middle" font-size="6" fill="rgba(255,255,255,.5)" font-weight="700" font-family="Nunito,sans-serif" letter-spacing="1.5">SKZ</text></g>
+                <g class="outfit off" id="OhoodieG"><path d="M36 116 Q34 148 70 152 Q106 148 104 116 Q94 122 70 122 Q46 122 36 116Z" fill="url(#gHoodie)"/><path d="M48 100 Q52 92 70 90 Q88 92 92 100 Q84 112 70 114 Q56 112 48 100Z" fill="#2e2e2e"/><path d="M54 136 Q54 148 70 149 Q86 148 86 136 Q86 130 70 130 Q54 130 54 136Z" fill="#252525"/><path d="M36 116 Q30 118 26 128 Q32 124 38 120Z" fill="#252525"/><path d="M104 116 Q110 118 114 128 Q108 124 102 120Z" fill="#252525"/><path d="M58 115 Q70 120 82 115" stroke="#aaa" stroke-width=".8" fill="none" opacity=".7"/><circle cx="70" cy="122" r="3.5" fill="#b8a090" opacity=".85"/><path d="M64 122 Q70 118 76 122" stroke="#aaa" stroke-width=".9" fill="none" opacity=".8"/></g>
+                <g class="outfit off" id="OnudeG"><path d="M55 118 Q70 120 85 118 Q85 125 70 126 Q55 125 55 118Z" fill="white" opacity=".08"/></g>
+                <g id="LSTICK" opacity="0" style="transition:opacity .4s ease;" transform="rotate(42,114,138)"><rect x="110" y="116" width="7" height="22" rx="3" fill="#2a2a2a"/><ellipse id="LSTICK_BULB" cx="113.5" cy="112" rx="8" ry="10" fill="#44aaff"/><ellipse cx="111" cy="108" rx="3" ry="4" fill="white" opacity=".4"/><ellipse id="LSTICK_GLOW" cx="113.5" cy="112" rx="12" ry="14" fill="none" stroke="#44aaff" stroke-width="2" opacity=".4" style="animation:lstickPulse 1s ease-in-out infinite;"/></g>
+                <g class="g-head">
+                  <g class="ear-l"><path d="M28 52 Q20 24 32 14 Q42 8 48 28 Q50 40 42 48Z" fill="#8a9ea8"/><path d="M32 48 Q26 28 34 18 Q40 12 44 28 Q46 38 40 46Z" fill="url(#gEarIn)"/><path d="M28 52 Q22 36 26 20 Q28 30 30 42Z" fill="#6a8090" opacity=".3"/></g>
+                  <g class="ear-r"><path d="M112 52 Q120 24 108 14 Q98 8 92 28 Q90 40 98 48Z" fill="#8a9ea8"/><path d="M108 48 Q114 28 106 18 Q100 12 96 28 Q94 38 100 46Z" fill="url(#gEarIn)"/><path d="M112 52 Q118 36 114 20 Q112 30 110 42Z" fill="#6a8090" opacity=".25"/></g>
+                  <path d="M28 80 Q26 54 36 42 Q46 30 70 28 Q94 30 104 42 Q114 54 112 80 Q110 106 88 114 Q70 118 52 114 Q30 106 28 80Z" fill="url(#gBody)"/>
+                  <path d="M52 40 Q70 34 88 40 Q82 32 70 30 Q58 32 52 40Z" fill="white" opacity=".14"/>
+                  <path d="M28 80 Q28 60 36 44 Q30 56 30 78 Q30 100 42 112Z" fill="#6a8090" opacity=".22"/><path d="M112 80 Q112 60 104 44 Q110 56 110 78 Q110 100 98 112Z" fill="#6a8090" opacity=".18"/>
+                  <path d="M46 78 Q46 108 70 112 Q94 108 94 78 Q92 60 70 58 Q48 60 46 78Z" fill="url(#gFace)"/>
+                  <path d="M60 46 Q70 38 80 46 Q76 54 70 56 Q64 54 60 46Z" fill="#7a9098" opacity=".55"/><path d="M63 46 Q70 40 77 46 Q74 52 70 53 Q66 52 63 46Z" fill="#8aaab8" opacity=".4"/>
+                  <ellipse cx="52" cy="78" rx="11" ry="9" fill="white" opacity=".9"/><ellipse cx="52" cy="79" rx="7" ry="7" fill="#2a2a2a"/><ellipse cx="52" cy="79" rx="5" ry="5" fill="#1a1a1a"/><ellipse cx="55" cy="76" rx="2.5" ry="2" fill="white" opacity=".8"/><ellipse cx="50" cy="81" rx="1" ry=".8" fill="white" opacity=".4"/>
+                  <g class="eyelid-l"><path d="M41 78 Q52 68 63 78 Q55 72 52 71 Q49 72 41 78Z" fill="#8a9ea8"/></g>
+                  <ellipse cx="88" cy="78" rx="11" ry="9" fill="white" opacity=".9"/><ellipse cx="88" cy="79" rx="7" ry="7" fill="#2a2a2a"/><ellipse cx="88" cy="79" rx="5" ry="5" fill="#1a1a1a"/><ellipse cx="91" cy="76" rx="2.5" ry="2" fill="white" opacity=".8"/><ellipse cx="86" cy="81" rx="1" ry=".8" fill="white" opacity=".4"/>
+                  <g class="eyelid-r"><path d="M77 78 Q88 68 99 78 Q91 72 88 71 Q85 72 77 78Z" fill="#8a9ea8"/></g>
+                  <g class="sleep-line"><path d="M42 77 Q52 83 62 77" stroke="#2a2e32" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M44 76 Q43 73 41 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M52 78 Q51 74 50 72" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M60 76 Q60 73 62 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/></g>
+                  <g class="sleep-line"><path d="M78 77 Q88 83 98 77" stroke="#2a2e32" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M80 76 Q79 73 77 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M88 78 Q87 74 86 72" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M96 76 Q96 73 98 71" stroke="#2a2e32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/></g>
+                  <path d="M64 88 Q70 84 76 88 Q74 92 70 93 Q66 92 64 88Z" fill="#c8d3d8" opacity=".5"/><path d="M62 92 Q64 86 70 84 Q76 86 78 92 Q76 98 70 99 Q64 98 62 92Z" fill="#1e2428"/><ellipse cx="67" cy="90" rx="2.5" ry="1.5" fill="white" opacity=".35"/>
+                  <path id="MOUTH" d="M58 102 Q70 112 82 102" stroke="#2a2e32" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                  <ellipse cx="40" cy="92" rx="7" ry="4.5" fill="#c07878" opacity=".22"/><ellipse cx="100" cy="92" rx="7" ry="4.5" fill="#c07878" opacity=".18"/><circle cx="42" cy="89" r="2" fill="#8090a0" opacity=".45"/><circle cx="38" cy="94" r="1.5" fill="#8090a0" opacity=".35"/><circle cx="98" cy="89" r="2" fill="#8090a0" opacity=".4"/><circle cx="102" cy="94" r="1.5" fill="#8090a0" opacity=".3"/>
+                </g>
+                <g id="PETHAND" opacity="0" style="pointer-events:none;"><rect x="48" y="-28" width="44" height="30" rx="12" fill="#f0c090"/><rect x="48" y="-28" width="44" height="8" rx="8" fill="#d9a070" opacity=".4"/><path d="M54 -14 Q70 -10 86 -14" stroke="#c8906a" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".5"/><path d="M48 -20 Q38 -18 36 -10 Q36 -4 42 -4 Q48 -4 48 -12Z" fill="#f0c090"/><rect x="50" y="-44" width="9" height="20" rx="4.5" fill="#f0c090"/><rect x="62" y="-46" width="9" height="22" rx="4.5" fill="#f0c090"/><rect x="74" y="-46" width="9" height="22" rx="4.5" fill="#f0c090"/><rect x="86" y="-44" width="9" height="20" rx="4.5" fill="#f0c090"/><line x1="54.5" y1="-36" x2="54.5" y2="-28" stroke="#c8906a" stroke-width=".7" opacity=".35"/><line x1="66.5" y1="-36" x2="66.5" y2="-28" stroke="#c8906a" stroke-width=".7" opacity=".35"/><line x1="78.5" y1="-36" x2="78.5" y2="-28" stroke="#c8906a" stroke-width=".7" opacity=".35"/><line x1="90.5" y1="-36" x2="90.5" y2="-28" stroke="#c8906a" stroke-width=".7" opacity=".35"/></g>
+              </g>
+              <g class="zzz-group" id="ZZZG"></g>
+            </svg>
+            <div class="zzz-group" id="ZZZDOM">
+              <span class="zzz">z</span><span class="zzz">z</span><span class="zzz">Z</span>
+            </div>
+          </div>
+
+          <div class="ground"><span class="groundtxt">SKZOO · WOLF CHAN</span></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div id="NORMAL_BTNS">
+          <div class="actrow">
+            <div class="btngroup"><div class="btn" onclick="Wolf.act('feed')">🍖</div><div class="btnlabel">Feed</div></div>
+            <div class="btngroup"><div class="btn" onclick="Wolf.act('pet')">✨</div><div class="btnlabel">Pet</div></div>
+            <div class="btn btncenter" id="MUSICBTN" onclick="Wolf.act('music')">🎵</div>
+            <div class="btngroup"><div class="btn" onclick="Wolf.act('sleep')">🌙</div><div class="btnlabel">Sleep</div></div>
+            <div class="btngroup"><div class="btn" onclick="Wolf.act('wake')">☀️</div><div class="btnlabel">Wake</div></div>
+          </div>
+          <div class="lstick-row" id="LSTICKROW">
+            <button class="lstick-btn" data-color="#ff4466" onclick="Wolf.pickStick(this)">🪄</button>
+            <button class="lstick-btn" data-color="#ff9900" onclick="Wolf.pickStick(this)">🪄</button>
+            <button class="lstick-btn" data-color="#ffe800" onclick="Wolf.pickStick(this)">🪄</button>
+            <button class="lstick-btn" data-color="#44ff88" onclick="Wolf.pickStick(this)">🪄</button>
+            <button class="lstick-btn" data-color="#44aaff" onclick="Wolf.pickStick(this)">🪄</button>
+            <button class="lstick-btn" data-color="#cc44ff" onclick="Wolf.pickStick(this)">🪄</button>
+            <button class="lstick-btn" data-color="#ffffff" onclick="Wolf.pickStick(this)">🪄</button>
+          </div>
+          <div class="outfitstrip">
+            <button class="outfitbtn on" onclick="Wolf.setOutfit('default',this)">Default</button>
+            <button class="outfitbtn" onclick="Wolf.setOutfit('karma',this)">KARMA</button>
+            <button class="outfitbtn" onclick="Wolf.setOutfit('hoodie',this)">Hoodie</button>
+            <button class="outfitbtn" onclick="Wolf.setOutfit('nude',this)">No Shirt</button>
+          </div>
+        </div>
+
+        <div id="TRIVIA_BTNS">
+          <div class="trivia-btn-row">
+            <button class="trivia-answer-btn" id="TRIVIA_BTN_0" onclick="Trivia.answer(0)"><span class="trivia-btn-letter">A</span><span class="trivia-btn-text">—</span></button>
+            <button class="trivia-answer-btn" id="TRIVIA_BTN_1" onclick="Trivia.answer(1)"><span class="trivia-btn-letter">B</span><span class="trivia-btn-text">—</span></button>
+          </div>
+          <div class="trivia-btn-row">
+            <button class="trivia-answer-btn" id="TRIVIA_BTN_2" onclick="Trivia.answer(2)"><span class="trivia-btn-letter">C</span><span class="trivia-btn-text">—</span></button>
+            <button class="trivia-answer-btn" id="TRIVIA_BTN_3" onclick="Trivia.answer(3)"><span class="trivia-btn-letter">D</span><span class="trivia-btn-text">—</span></button>
+          </div>
+          <div class="trivia-skip-row">
+            <button class="trivia-quit-btn" onclick="Trivia.stop()">✕ Quit</button>
+            <button class="trivia-skip-btn-ctrl" id="TRIVIA_SKIP" onclick="Trivia.skip()">→ Skip</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="devicelabel">SKZOO · WOLF CHAN · v1.0</div>
+    </div>
+  </div>
+
+  <div class="player-panel">
+    <div id="PLAYER_UI"><div style="text-align:center;color:rgba(142,207,142,.3);font-size:11px;padding:20px 0;">Loading tracks...</div></div>
+  </div>
+
+</div>
+
+<script>
+function syncHearts(){const h=Health.get().health;for(let i=1;i<=5;i++)document.getElementById('h'+i).classList.toggle('empty',i>h);}
+document.addEventListener('skzoo:healthChange',syncHearts);
+</script>
+
+<script src="js/health.js"></script>
+<script src="js/wolf.js"></script>
+<script src="js/player.js"></script>
+<script src="js/trivia.js"></script>
+
+<script>
+const Scene=(()=>{
+  const BUILT_IN=[null,'assets/img/scene1.png','assets/img/scene2.png','assets/img/scene3.png','assets/img/scene4.png','assets/img/scene1.gif','assets/img/scene2.gif','assets/img/scene3.gif','assets/img/scene4.gif'];
+  let idx=0,custom=null;
+  function set(v){
+    const bg=document.getElementById('SCENE_BG'),ov=document.getElementById('SCENE_OVERLAY');
+    if(v===0||v==='none'){bg.innerHTML='';bg.style.backgroundImage='none';ov.style.opacity='0';idx=0;custom=null;save();return;}
+    const url=typeof v==='string'&&v.startsWith('data:')?v:BUILT_IN[v];
+    if(!url)return;
+    bg.innerHTML='';bg.style.backgroundImage='none';
+    const img=document.createElement('img');img.src=url;img.onerror=()=>{bg.innerHTML='';};bg.appendChild(img);
+    ov.style.opacity='1';save();
+  }
+  function cycle(){idx=(idx+1)%BUILT_IN.length;set(idx===0?0:idx);}
+  function upload(){document.getElementById('SCENE_INPUT').click();}
+  function onFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{custom=ev.target.result;set(custom);};r.readAsDataURL(f);e.target.value='';}
+  function save(){try{localStorage.setItem('skzoo-scene-idx',idx);if(custom)localStorage.setItem('skzoo-scene-custom',custom);else localStorage.removeItem('skzoo-scene-custom');}catch(e){}}
+  function load(){try{const c=localStorage.getItem('skzoo-scene-custom');if(c){custom=c;set(custom);return;}const i=parseInt(localStorage.getItem('skzoo-scene-idx')||'0');if(i>0)set(i);}catch(e){}}
+  return{set,cycle,upload,onFile,load};
+})();
+
+const Casing=(()=>{
+  function upload(){document.getElementById('CASING_INPUT').click();}
+  function onFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{apply(ev.target.result);try{localStorage.setItem('skzoo-casing',ev.target.result);}catch(e){}};r.readAsDataURL(f);e.target.value='';}
+  function apply(url){const el=document.getElementById('CASING_IMG'),btn=document.getElementById('CASING_CLEAR');if(el)el.style.backgroundImage=`url('${url}')`;if(btn)btn.style.display='inline-block';}
+  function clear(){const el=document.getElementById('CASING_IMG'),btn=document.getElementById('CASING_CLEAR');if(el)el.style.backgroundImage='none';if(btn)btn.style.display='none';try{localStorage.removeItem('skzoo-casing');}catch(e){}}
+  function load(){try{const s=localStorage.getItem('skzoo-casing');if(s)apply(s);}catch(e){}}
+  return{upload,onFile,apply,clear,load};
+})();
+
+Health.init();Wolf.init();Player.init();Trivia.init();Scene.load();Casing.load();
+</script>
+</body>
+</html>
